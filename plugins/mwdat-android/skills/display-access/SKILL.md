@@ -317,5 +317,5 @@ Use the Display Access sample app for a complete flow: registration, device sele
 
 ## Links
 
-- [Android API reference](https://wearables.developer.meta.com/docs/reference/android/dat/0.7)
+- [Android API reference](https://wearables.developer.meta.com/docs/reference/android/dat/0.8)
 - [Developer documentation](https://wearables.developer.meta.com/docs/develop/)

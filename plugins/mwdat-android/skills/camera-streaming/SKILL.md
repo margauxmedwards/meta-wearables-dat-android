@@ -118,5 +118,5 @@ If you want to remove the capability entirely before re-adding it, call `session
 
 ## Links
 
-- [Android API reference](https://wearables.developer.meta.com/docs/reference/android/dat/0.7)
+- [Android API reference](https://wearables.developer.meta.com/docs/reference/android/dat/0.8)
 - [Integration guide](https://wearables.developer.meta.com/docs/build-integration-android)

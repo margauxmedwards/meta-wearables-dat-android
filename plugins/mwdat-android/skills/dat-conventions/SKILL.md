@@ -79,7 +79,7 @@ Avoid `getOrThrow()` in user-facing samples. Surface typed errors from `DatResul
 
 ## Live docs search
 
-If your editor supports remote MCP servers, connect `https://mcp.facebook.com/wearables_dat` and use `search_dat_docs` for current DAT setup, session lifecycle, camera streaming, MockDeviceKit, permissions, and exact API symbols.
+If your editor supports remote MCP servers, connect `https://mcp.developer.meta.com/wearables` and use `search_dat_docs` for current DAT setup, session lifecycle, camera streaming, MockDeviceKit, permissions, and exact API symbols. This public docs server does not require authentication; do not configure tokens, OAuth, or custom authorization headers for it.
 
 Use `llms.txt` when your tool only supports static reference context.
 
@@ -88,7 +88,7 @@ Use `llms.txt` when your tool only supports static reference context.
 ```kotlin
 val mockDeviceKit = MockDeviceKit.getInstance(context)
 mockDeviceKit.enable()
-val device = mockDeviceKit.pairRaybanMeta()
+val device = mockDeviceKit.pairGlasses(GlassesModel.RAYBAN_META).getOrThrow()
 ```
 
 Use MockDeviceKit to drive registration, device availability, streaming media, and permission scenarios without physical hardware.
@@ -102,6 +102,6 @@ Use MockDeviceKit to drive registration, device availability, streaming media, a
 
 ## Links
 
-- [Android API reference](https://wearables.developer.meta.com/docs/reference/android/dat/0.7)
+- [Android API reference](https://wearables.developer.meta.com/docs/reference/android/dat/0.8)
 - [Developer documentation](https://wearables.developer.meta.com/docs/develop/)
 - [GitHub repository](https://github.com/facebook/meta-wearables-dat-android)

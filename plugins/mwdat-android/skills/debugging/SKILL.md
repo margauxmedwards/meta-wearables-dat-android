@@ -25,7 +25,7 @@ No eligible device or session won't start?
 
 ## Developer Mode
 
-Developer Mode must be enabled for local development builds that use `APPLICATION_ID = 0`.
+Developer Mode must be enabled for local development builds that use `mwdat_application_id = 0` and `mwdat_client_token = 0`.
 
 ### Symptoms when Developer Mode is disabled
 
@@ -37,7 +37,7 @@ Developer Mode must be enabled for local development builds that use `APPLICATIO
 
 - Developer Mode may reset after app or firmware updates
 - Developer Mode is configured per linked device
-- Production builds use a real `APPLICATION_ID` and release-channel gating instead
+- Production builds use a real `APPLICATION_ID`, `CLIENT_TOKEN`, and release-channel gating instead
 
 ## Session and stream issues
 
@@ -77,7 +77,7 @@ Prefer logging typed `DatResult` failures and observed state transitions over ge
 
 - [ ] `Wearables.initialize(context)` ran before SDK usage
 - [ ] Developer Mode enabled for development builds
-- [ ] `APPLICATION_ID` matches the build mode
+- [ ] `APPLICATION_ID` and `CLIENT_TOKEN` match the build mode
 - [ ] Registration completed before session creation
 - [ ] Bluetooth permission granted
 - [ ] Camera permission granted through Meta AI

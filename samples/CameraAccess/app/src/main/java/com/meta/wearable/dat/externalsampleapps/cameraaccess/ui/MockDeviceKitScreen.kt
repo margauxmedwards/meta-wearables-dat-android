@@ -132,7 +132,7 @@ fun MockDeviceKitScreen(
           ActionButton(
               modifier = Modifier.fillMaxWidth(),
               text = stringResource(R.string.pair_rayban_meta),
-              onClick = { viewModel.pairRaybanMeta() },
+              onClick = { viewModel.pairGlasses() },
               enabled = uiState.pairedDevices.size < 3,
           )
         }

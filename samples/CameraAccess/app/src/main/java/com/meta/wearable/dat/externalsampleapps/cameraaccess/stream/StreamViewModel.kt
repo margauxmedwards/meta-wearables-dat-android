@@ -43,7 +43,6 @@ import com.meta.wearable.dat.core.selectors.DeviceSelector
 import com.meta.wearable.dat.core.session.DeviceSession
 import com.meta.wearable.dat.core.session.DeviceSessionState
 import com.meta.wearable.dat.core.types.DeviceSessionError
-import com.meta.wearable.dat.externalsampleapps.cameraaccess.R
 import com.meta.wearable.dat.externalsampleapps.cameraaccess.wearables.WearablesViewModel
 import java.io.ByteArrayInputStream
 import java.io.File
@@ -77,7 +76,7 @@ class StreamViewModel(
   private var videoJob: Job? = null
   private var stateJob: Job? = null
   private var errorJob: Job? = null
-  @SuppressLint("MissingGuardedByAnnotation") private var sessionErrorJob: Job? = null
+  private var sessionErrorJob: Job? = null
   private var sessionStateJob: Job? = null
   private var stream: Stream? = null
   private var previousDeviceSessionState: DeviceSessionState? = null
@@ -187,7 +186,11 @@ class StreamViewModel(
                     }
                     stopStream()
                     wearablesViewModel.navigateToDeviceSelection()
-                    wearablesViewModel.setRecentError(error.description)
+                    // Use `getLocalizedDescription(context)` for user-facing text —
+                    // `description` is always English and intended for logs.
+                    wearablesViewModel.setRecentError(
+                        error.getLocalizedDescription(getApplication())
+                    )
                   }
                 }
                 stream?.start()
@@ -230,38 +233,18 @@ class StreamViewModel(
         wearablesViewModel.uiState.value.isFirmwareUpdateRequired ||
             wearablesViewModel.uiState.value.isDatAppUpdateRequired
 
-    if (
-        error == DeviceSessionError.SESSION_ENDED_BY_DEVICE &&
-            shouldTreatSessionEndedAsDatAppUpdateRequired()
-    ) {
+    if (error == DeviceSessionError.DAT_APP_ON_THE_GLASSES_UPDATE_REQUIRED) {
       wearablesViewModel.setDatAppUpdateRequired(true)
-      wearablesViewModel.setRecentError(
-          getApplication<Application>().getString(R.string.update_required_dat_app_message)
-      )
-      stopStream()
-      wearablesViewModel.navigateToDeviceSelection()
-      return
     }
-
     if (alreadyShowingUpdateRequired && error == DeviceSessionError.SESSION_ENDED_BY_DEVICE) {
       stopStream()
       wearablesViewModel.navigateToDeviceSelection()
       return
     }
 
-    if (error == DeviceSessionError.DAT_APP_ON_THE_GLASSES_UPDATE_REQUIRED) {
-      wearablesViewModel.setDatAppUpdateRequired(true)
-    }
-    wearablesViewModel.setRecentError(error.description)
+    wearablesViewModel.setRecentError(error.getLocalizedDescription(getApplication()))
     stopStream()
     wearablesViewModel.navigateToDeviceSelection()
-  }
-
-  private fun shouldTreatSessionEndedAsDatAppUpdateRequired(): Boolean {
-    val sessionNeverStarted =
-        previousDeviceSessionState != DeviceSessionState.STARTED &&
-            previousDeviceSessionState != DeviceSessionState.PAUSED
-    return sessionNeverStarted
   }
 
   fun capturePhoto() {

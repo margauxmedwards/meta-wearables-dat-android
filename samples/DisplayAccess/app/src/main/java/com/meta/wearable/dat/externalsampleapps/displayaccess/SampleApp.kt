@@ -15,8 +15,8 @@ import androidx.compose.ui.graphics.vector.ImageVector
 
 /** Defines the available display sample apps. */
 enum class SampleApp(
-    @StringRes val titleRes: Int,
-    @StringRes val descriptionRes: Int,
+    @param:StringRes val titleRes: Int,
+    @param:StringRes val descriptionRes: Int,
     val icon: ImageVector,
     val route: String,
 ) {

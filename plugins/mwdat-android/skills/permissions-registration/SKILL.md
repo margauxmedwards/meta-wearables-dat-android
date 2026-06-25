@@ -81,8 +81,8 @@ Users can allow once or allow always through the Meta AI flow.
 
 | Mode | Registration behavior |
 |------|------------------------|
-| Developer Mode | Use `APPLICATION_ID = 0` for local development |
-| Production | Use the application ID assigned in the Wearables Developer Center |
+| Developer Mode | Use `mwdat_application_id = 0` and `mwdat_client_token = 0` manifest placeholders for local development |
+| Production | Use the application ID and client token assigned in the Wearables Developer Center |
 
 For development builds, enable Developer Mode in the Meta AI app before testing registration and permissions.
 

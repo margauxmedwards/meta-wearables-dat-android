@@ -5,6 +5,34 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.8.0] - 2026-06-25
+
+### Added
+
+- Meta Glasses support.
+- [Feature] **MockDeviceKit multi-glasses support.** `MockDeviceKit.pairGlasses(model)` is a single factory for all supported glasses models, returning `DatResult<MockGlasses, MockDeviceKitError>`, replacing `pairRaybanMeta()`.
+  - `GlassesModel` enum (`RAYBAN_META`, `OAKLEY_META_HSTN`, `OAKLEY_META_VANGUARD`, `RAYBAN_META_OPTICS`, `META_GLASSES`).
+  - `MockDeviceKitError.NotEnabled` for explicit error handling when MockDeviceKit is not enabled.
+- [API] `DeviceType.META_GLASSES` value.
+- [API] `StreamState.PAUSED` value for observing a paused camera stream.
+- [API] `AutoDeviceSelector.activeDevice()` — returns the currently active `DeviceIdentifier` (parity with `SpecificDeviceSelector.activeDevice()`).
+- [API] `Display.clearDisplay()` to clear rendered display content.
+
+### Changed
+
+- [API] Capabilities (`Stream`, `Display`) are now `Closeable` and expose a `stop()` method rather than implementing a `Capability` interface. The `Capability` and `BaseCapability` types are removed; manage capabilities directly through their `DeviceSession`.
+- [API] Renamed `MockDisplaylessGlasses` to `MockGlasses` and `MockDisplaylessGlassesServices` to `MockGlassesServices`.
+
+### Fixed
+
+- D8 warnings about "companion object could not be found".
+- Play Store warning about unknown language `fb` caused by pseudo-locale resources.
+
+### Removed
+
+- [API] `MockRaybanMeta` interface (use `MockGlasses`).
+- [API] `pairRaybanMeta()` (use `pairGlasses(GlassesModel.RAYBAN_META)`).
+
 ## [0.7.0] - 2026-05-14
 
 ### Added

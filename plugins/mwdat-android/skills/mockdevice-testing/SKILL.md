@@ -9,7 +9,7 @@ Use MockDeviceKit to test DAT SDK integrations without physical Meta glasses.
 
 MockDeviceKit simulates Meta glasses behavior for development and testing. It provides:
 - `MockDeviceKit` — Entry point for creating simulated devices
-- `MockRaybanMeta` — Simulated Ray-Ban Meta glasses
+- `MockGlasses` — Simulated Ray-Ban Meta glasses
 - `MockCameraKit` — Simulated camera with configurable video feed and photo capture
 
 ## Setup
@@ -37,7 +37,7 @@ mockDeviceKit.enable()
 // Or start in unregistered state to test registration flows:
 // mockDeviceKit.enable(MockDeviceKitConfig(initiallyRegistered = false))
 
-val device = mockDeviceKit.pairRaybanMeta()
+val device = mockDeviceKit.pairGlasses(GlassesModel.RAYBAN_META).getOrThrow()
 ```
 
 You can check `mockDeviceKit.isEnabled` to query whether the mock environment is active.

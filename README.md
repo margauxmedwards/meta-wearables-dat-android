@@ -1,7 +1,7 @@
 # Meta Wearables Device Access Toolkit for Android
 
-[![Maven](https://img.shields.io/badge/Maven-0.7.0-brightgreen?logo=apachemaven)](https://github.com/orgs/facebook/packages?repo_name=meta-wearables-dat-android)
-[![Docs](https://img.shields.io/badge/API_Reference-0.7-blue?logo=meta)](https://wearables.developer.meta.com/docs/reference/android/dat/0.7)
+[![Maven](https://img.shields.io/badge/Maven-0.8.0-brightgreen?logo=apachemaven)](https://github.com/orgs/facebook/packages?repo_name=meta-wearables-dat-android)
+[![Docs](https://img.shields.io/badge/API_Reference-0.8-blue?logo=meta)](https://wearables.developer.meta.com/docs/reference/android/dat/0.8)
 
 The Meta Wearables Device Access Toolkit enables developers to utilize Meta's AI glasses to build hands-free wearable experiences into their mobile applications.
 By integrating this SDK, developers can reliably connect to Meta's AI glasses and leverage capabilities like video streaming and photo capture.
@@ -60,11 +60,12 @@ Check the available versions in [GitHub Packages](https://github.com/orgs/facebo
 
 ```toml
 [versions]
-mwdat = "0.7.0"
+mwdat = "0.8.0"
 
 [libraries]
 mwdat-core = { group = "com.meta.wearable", name = "mwdat-core", version.ref = "mwdat" }
 mwdat-camera = { group = "com.meta.wearable", name = "mwdat-camera", version.ref = "mwdat" }
+mwdat-display = { group = "com.meta.wearable", name = "mwdat-display", version.ref = "mwdat" }
 mwdat-mockdevice = { group = "com.meta.wearable", name = "mwdat-mockdevice", version.ref = "mwdat" }
 ```
 
@@ -74,6 +75,7 @@ mwdat-mockdevice = { group = "com.meta.wearable", name = "mwdat-mockdevice", ver
 dependencies {
     implementation(libs.mwdat.core)
     implementation(libs.mwdat.camera)
+    implementation(libs.mwdat.display)
     implementation(libs.mwdat.mockdevice)
 }
 ```
@@ -141,7 +143,7 @@ This repository ships one public DAT knowledge base in two first-class formats:
 | [GitHub Copilot](https://github.com/features/copilot) | `.github/copilot-instructions.md` | Auto-loaded by Copilot in VS Code |
 | [Cursor](https://cursor.sh/) | `.cursor/rules/*.mdc` | Auto-loaded with glob-based triggers |
 | AGENTS.md-compatible tools | `AGENTS.md` | Portable fallback for agents that read `AGENTS.md` |
-| MCP-compatible editors | `https://mcp.facebook.com/wearables_dat` | Connect as a remote HTTP MCP server |
+| MCP-compatible editors | `https://mcp.developer.meta.com/wearables` | Connect as a remote HTTP MCP server; no authentication required |
 
 Claude and Codex install from the plugin payload under `plugins/`. Copilot, Cursor, and `AGENTS.md` readers use the native file-based artifacts at repo root.
 
@@ -193,13 +195,14 @@ curl -sL https://raw.githubusercontent.com/facebook/meta-wearables-dat-android/m
 
 - **Getting started** — SDK setup, Gradle integration, manifest configuration
 - **Camera streaming** — Session and Stream capability setup, video frames, resolution/frame rate, photo capture
+- **Display** — Use Display features on the Meta Ray-Ban Display glasses
 - **MockDevice testing** — Test without physical glasses using MockDeviceKit
 - **Session lifecycle** — Session and stream state, pause/resume behavior, and device availability monitoring
 - **Permissions & registration** — App registration with Meta AI and device permission flows
 - **Debugging** — Common issues, Developer Mode, version compatibility, and session and stream diagnosis
 - **Sample app guide** — Building a complete DAT app
 
-For static reference context, point your AI tool at the [llms.txt endpoint](https://wearables.developer.meta.com/llms.txt?full=true). For live documentation search in MCP-compatible editors, connect `https://mcp.facebook.com/wearables_dat` and use `search_dat_docs`.
+For static reference context, point your AI tool at the [llms.txt endpoint](https://wearables.developer.meta.com/llms.txt?full=true). For live documentation search in MCP-compatible editors, connect `https://mcp.developer.meta.com/wearables` and use `search_dat_docs`. The public docs MCP server does not require authentication; do not configure tokens, OAuth, or custom authorization headers for it.
 
 ## License
 

@@ -51,7 +51,6 @@ import kotlinx.coroutines.launch
 
 @SuppressLint(
     "AutoCloseableUse",
-    "AvoidVanillaCoroutineDispatcherOnWearables",
     "NavigatorCoroutineLaunchWithoutExceptionHandler",
 )
 class DisplayViewModel(

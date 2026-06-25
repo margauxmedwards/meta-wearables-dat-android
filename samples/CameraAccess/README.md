@@ -12,9 +12,9 @@ A sample Android application demonstrating integration with Meta Wearables Devic
 
 ## Prerequisites
 
-- Android Studio Arctic Fox (2021.3.1) or newer
-- JDK 11 or newer
-- Android SDK 31+ (Android 12.0+)
+- Android Studio Narwhal (2025.1.1) or newer
+- JDK 17 or newer
+- Android SDK 36 or newer
 - Meta Wearables Device Access Toolkit (included as a dependency)
 - A Meta AI glasses device for testing (optional for development)
 
@@ -24,7 +24,7 @@ A sample Android application demonstrating integration with Meta Wearables Devic
 
 1. Clone this repository
 1. Open the project in Android Studio
-1. Add your personal access token (classic) to the `local.properties` file (see [SDK for Android setup](https://wearables.developer.meta.com/docs/getting-started-toolkit/#sdk-for-android-setup))
+1. Add your personal access token (classic) to the `local.properties` file (see [SDK for Android setup](https://wearables.developer.meta.com/docs/develop/dat/build-integration-android#step-2-add-the-sdk-to-gradle))
 1. Click **File** > **Sync Project with Gradle Files**
 1. Click **Run** > **Run...** > **app**
 
@@ -43,7 +43,7 @@ A sample Android application demonstrating integration with Meta Wearables Devic
 
 ## Troubleshooting
 
-For issues related to the Meta Wearables Device Access Toolkit, please refer to the [developer documentation](https://wearables.developer.meta.com/docs/develop/) or visit our [discussions forum](https://github.com/facebook/meta-wearables-dat-android/discussions)
+For issues related to the Meta Wearables Device Access Toolkit, please refer to the [developer documentation](https://wearables.developer.meta.com/docs/develop/dat/) or visit our [discussions forum](https://github.com/facebook/meta-wearables-dat-android/discussions)
 
 ## License
 

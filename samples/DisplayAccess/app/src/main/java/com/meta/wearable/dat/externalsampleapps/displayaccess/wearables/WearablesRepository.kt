@@ -15,10 +15,10 @@ import com.meta.wearable.dat.core.Wearables
 import com.meta.wearable.dat.core.types.Device
 import com.meta.wearable.dat.core.types.DeviceIdentifier
 import com.meta.wearable.dat.core.types.RegistrationState
-import com.meta.wearable.sdk.concurrency.coroutines.WearableCoroutineScopes
-import com.meta.wearable.sdk.concurrency.coroutines.WearableDispatchers
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -111,7 +111,7 @@ class WearablesRepository(
             instance
                 ?: WearablesRepository(
                         applicationContext,
-                        WearableCoroutineScopes.applicationScope(WearableDispatchers.main()),
+                        CoroutineScope(SupervisorJob() + Dispatchers.Main),
                     )
                     .also { instance = it }
           }

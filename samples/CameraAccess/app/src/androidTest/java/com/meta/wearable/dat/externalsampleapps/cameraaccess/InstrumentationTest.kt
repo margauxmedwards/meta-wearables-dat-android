@@ -33,6 +33,7 @@ import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.filters.LargeTest
 import androidx.test.platform.app.InstrumentationRegistry
 import com.meta.wearable.dat.mockdevice.MockDeviceKit
+import com.meta.wearable.dat.mockdevice.api.GlassesModel
 import java.io.File
 import java.io.FileOutputStream
 import java.io.IOException
@@ -78,7 +79,7 @@ class InstrumentationTest {
     val nonStreamScreenText = targetContext.getString(R.string.non_stream_screen_description)
     val mockDeviceKit = MockDeviceKit.getInstance(targetContext)
     mockDeviceKit.enable()
-    mockDeviceKit.pairRaybanMeta().powerOn()
+    mockDeviceKit.pairGlasses(GlassesModel.RAYBAN_META).getOrThrow().powerOn()
 
     composeTestRule.waitUntilExactlyOneExists(hasText(nonStreamScreenText), timeoutMillis = 5000)
   }
@@ -92,7 +93,7 @@ class InstrumentationTest {
     // Pair mock device and provide fake camera feed
     val mockDeviceKit = MockDeviceKit.getInstance(targetContext)
     mockDeviceKit.enable()
-    val device = mockDeviceKit.pairRaybanMeta()
+    val device = mockDeviceKit.pairGlasses(GlassesModel.RAYBAN_META).getOrThrow()
     device.powerOn()
     device.don()
     device.unfold()
@@ -127,7 +128,7 @@ class InstrumentationTest {
     // Pair mock device and provide fake camera feed and captured image
     val mockDeviceKit = MockDeviceKit.getInstance(targetContext)
     mockDeviceKit.enable()
-    val device = mockDeviceKit.pairRaybanMeta()
+    val device = mockDeviceKit.pairGlasses(GlassesModel.RAYBAN_META).getOrThrow()
     device.powerOn()
     device.don()
     val mockCameraKit = device.services.camera

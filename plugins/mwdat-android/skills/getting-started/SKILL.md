@@ -49,20 +49,29 @@ In `libs.versions.toml`:
 
 ```toml
 [versions]
-mwdat = "0.7.0"
+mwdat = "0.8.0"
 
 [libraries]
 mwdat-core = { group = "com.meta.wearable", name = "mwdat-core", version.ref = "mwdat" }
 mwdat-camera = { group = "com.meta.wearable", name = "mwdat-camera", version.ref = "mwdat" }
+mwdat-display = { group = "com.meta.wearable", name = "mwdat-display", version.ref = "mwdat" }
 mwdat-mockdevice = { group = "com.meta.wearable", name = "mwdat-mockdevice", version.ref = "mwdat" }
 ```
 
 In `app/build.gradle.kts`:
 
 ```kotlin
+android {
+    defaultConfig {
+        manifestPlaceholders["mwdat_application_id"] = "0"
+        manifestPlaceholders["mwdat_client_token"] = "0"
+    }
+}
+
 dependencies {
     implementation(libs.mwdat.core)
     implementation(libs.mwdat.camera)
+    implementation(libs.mwdat.display)
     implementation(libs.mwdat.mockdevice)
 }
 ```
@@ -71,13 +80,17 @@ dependencies {
 
 ```xml
 <manifest ...>
+    <uses-permission android:name="android.permission.BLUETOOTH" />
     <uses-permission android:name="android.permission.BLUETOOTH_CONNECT" />
     <uses-permission android:name="android.permission.INTERNET" />
 
     <application ...>
         <meta-data
             android:name="com.meta.wearable.mwdat.APPLICATION_ID"
-            android:value="0" />
+            android:value="${mwdat_application_id}" />
+        <meta-data
+            android:name="com.meta.wearable.mwdat.CLIENT_TOKEN"
+            android:value="${mwdat_client_token}" />
 
         <activity android:name=".MainActivity" ...>
             <intent-filter>
@@ -91,7 +104,7 @@ dependencies {
 </manifest>
 ```
 
-Use `0` for `APPLICATION_ID` in Developer Mode. Replace `myexampleapp` with your app's URL scheme.
+`APPLICATION_ID` and `CLIENT_TOKEN` are used for app attestation and can be found in the Wearables Developer Center. In Developer Mode, attestation is not used, so the manifest placeholders can both be `0`. For production, replace both placeholders with the credentials for your Wearables Developer Center app. Replace `myexampleapp` with your app's URL scheme.
 
 ## Step 4: Initialize the SDK
 
@@ -166,4 +179,4 @@ stream.start().onFailure { error, _ ->
 - [MockDevice Testing](mockdevice-testing.md) — Test without hardware
 - [Session Lifecycle](session-lifecycle.md) — Handle session and stream state changes
 - [Permissions](permissions-registration.md) — Registration and permission flows
-- [Full Android API reference](https://wearables.developer.meta.com/docs/reference/android/dat/0.7)
+- [Full Android API reference](https://wearables.developer.meta.com/docs/reference/android/dat/0.8)

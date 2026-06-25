@@ -13,7 +13,7 @@ Pair this with the [CameraAccess sample](https://github.com/facebook/meta-wearab
 
 1. Create an Android Studio app project.
 2. Add the DAT Maven repository and dependencies.
-3. Configure `AndroidManifest.xml` for registration callbacks and `APPLICATION_ID`.
+3. Configure `AndroidManifest.xml` for registration callbacks plus `APPLICATION_ID` and `CLIENT_TOKEN`.
 4. Initialize `Wearables` in your `Application`.
 
 ## Suggested app structure

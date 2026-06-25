@@ -2,7 +2,7 @@
 
 > Full API reference: [https://wearables.developer.meta.com/llms.txt?full=true](https://wearables.developer.meta.com/llms.txt?full=true)
 >
-> DAT docs MCP: [https://mcp.facebook.com/wearables_dat](https://mcp.facebook.com/wearables_dat)
+> DAT docs MCP: [https://mcp.developer.meta.com/wearables](https://mcp.developer.meta.com/wearables)
 >
 > Developer docs: [https://wearables.developer.meta.com/docs/develop/](https://wearables.developer.meta.com/docs/develop/)
 
@@ -82,7 +82,7 @@ Avoid `getOrThrow()` in user-facing samples. Surface typed errors from `DatResul
 
 ## Live docs search
 
-If your editor supports remote MCP servers, connect `https://mcp.facebook.com/wearables_dat` and use `search_dat_docs` for current DAT setup, session lifecycle, camera streaming, MockDeviceKit, permissions, and exact API symbols.
+If your editor supports remote MCP servers, connect `https://mcp.developer.meta.com/wearables` and use `search_dat_docs` for current DAT setup, session lifecycle, camera streaming, MockDeviceKit, permissions, and exact API symbols. This public docs server does not require authentication; do not configure tokens, OAuth, or custom authorization headers for it.
 
 Use `llms.txt` when your tool only supports static reference context.
 
@@ -91,7 +91,7 @@ Use `llms.txt` when your tool only supports static reference context.
 ```kotlin
 val mockDeviceKit = MockDeviceKit.getInstance(context)
 mockDeviceKit.enable()
-val device = mockDeviceKit.pairRaybanMeta()
+val device = mockDeviceKit.pairGlasses(GlassesModel.RAYBAN_META).getOrThrow()
 ```
 
 Use MockDeviceKit to drive registration, device availability, streaming media, and permission scenarios without physical hardware.
@@ -105,7 +105,7 @@ Use MockDeviceKit to drive registration, device availability, streaming media, a
 
 ## Links
 
-- [Android API reference](https://wearables.developer.meta.com/docs/reference/android/dat/0.7)
+- [Android API reference](https://wearables.developer.meta.com/docs/reference/android/dat/0.8)
 - [Developer documentation](https://wearables.developer.meta.com/docs/develop/)
 - [GitHub repository](https://github.com/facebook/meta-wearables-dat-android)
 
@@ -224,7 +224,7 @@ If you want to remove the capability entirely before re-adding it, call `session
 
 ## Links
 
-- [Android API reference](https://wearables.developer.meta.com/docs/reference/android/dat/0.7)
+- [Android API reference](https://wearables.developer.meta.com/docs/reference/android/dat/0.8)
 - [Integration guide](https://wearables.developer.meta.com/docs/build-integration-android)
 
 # Debugging (Android)
@@ -249,7 +249,7 @@ No eligible device or session won't start?
 
 ## Developer Mode
 
-Developer Mode must be enabled for local development builds that use `APPLICATION_ID = 0`.
+Developer Mode must be enabled for local development builds that use `mwdat_application_id = 0` and `mwdat_client_token = 0`.
 
 ### Symptoms when Developer Mode is disabled
 
@@ -261,7 +261,7 @@ Developer Mode must be enabled for local development builds that use `APPLICATIO
 
 - Developer Mode may reset after app or firmware updates
 - Developer Mode is configured per linked device
-- Production builds use a real `APPLICATION_ID` and release-channel gating instead
+- Production builds use a real `APPLICATION_ID`, `CLIENT_TOKEN`, and release-channel gating instead
 
 ## Session and stream issues
 
@@ -301,7 +301,7 @@ Prefer logging typed `DatResult` failures and observed state transitions over ge
 
 - [ ] `Wearables.initialize(context)` ran before SDK usage
 - [ ] Developer Mode enabled for development builds
-- [ ] `APPLICATION_ID` matches the build mode
+- [ ] `APPLICATION_ID` and `CLIENT_TOKEN` match the build mode
 - [ ] Registration completed before session creation
 - [ ] Bluetooth permission granted
 - [ ] Camera permission granted through Meta AI
@@ -359,20 +359,29 @@ In `libs.versions.toml`:
 
 ```toml
 [versions]
-mwdat = "0.7.0"
+mwdat = "0.8.0"
 
 [libraries]
 mwdat-core = { group = "com.meta.wearable", name = "mwdat-core", version.ref = "mwdat" }
 mwdat-camera = { group = "com.meta.wearable", name = "mwdat-camera", version.ref = "mwdat" }
+mwdat-display = { group = "com.meta.wearable", name = "mwdat-display", version.ref = "mwdat" }
 mwdat-mockdevice = { group = "com.meta.wearable", name = "mwdat-mockdevice", version.ref = "mwdat" }
 ```
 
 In `app/build.gradle.kts`:
 
 ```kotlin
+android {
+    defaultConfig {
+        manifestPlaceholders["mwdat_application_id"] = "0"
+        manifestPlaceholders["mwdat_client_token"] = "0"
+    }
+}
+
 dependencies {
     implementation(libs.mwdat.core)
     implementation(libs.mwdat.camera)
+    implementation(libs.mwdat.display)
     implementation(libs.mwdat.mockdevice)
 }
 ```
@@ -381,13 +390,17 @@ dependencies {
 
 ```xml
 <manifest ...>
+    <uses-permission android:name="android.permission.BLUETOOTH" />
     <uses-permission android:name="android.permission.BLUETOOTH_CONNECT" />
     <uses-permission android:name="android.permission.INTERNET" />
 
     <application ...>
         <meta-data
             android:name="com.meta.wearable.mwdat.APPLICATION_ID"
-            android:value="0" />
+            android:value="${mwdat_application_id}" />
+        <meta-data
+            android:name="com.meta.wearable.mwdat.CLIENT_TOKEN"
+            android:value="${mwdat_client_token}" />
 
         <activity android:name=".MainActivity" ...>
             <intent-filter>
@@ -401,7 +414,7 @@ dependencies {
 </manifest>
 ```
 
-Use `0` for `APPLICATION_ID` in Developer Mode. Replace `myexampleapp` with your app's URL scheme.
+`APPLICATION_ID` and `CLIENT_TOKEN` are used for app attestation and can be found in the Wearables Developer Center. In Developer Mode, attestation is not used, so the manifest placeholders can both be `0`. For production, replace both placeholders with the credentials for your Wearables Developer Center app. Replace `myexampleapp` with your app's URL scheme.
 
 ## Step 4: Initialize the SDK
 
@@ -476,7 +489,7 @@ stream.start().onFailure { error, _ ->
 - [MockDevice Testing](mockdevice-testing.md) — Test without hardware
 - [Session Lifecycle](session-lifecycle.md) — Handle session and stream state changes
 - [Permissions](permissions-registration.md) — Registration and permission flows
-- [Full Android API reference](https://wearables.developer.meta.com/docs/reference/android/dat/0.7)
+- [Full Android API reference](https://wearables.developer.meta.com/docs/reference/android/dat/0.8)
 
 # MockDevice Testing (Android)
 
@@ -484,7 +497,7 @@ Use MockDeviceKit to test DAT SDK integrations without physical Meta glasses.
 
 MockDeviceKit simulates Meta glasses behavior for development and testing. It provides:
 - `MockDeviceKit` — Entry point for creating simulated devices
-- `MockRaybanMeta` — Simulated Ray-Ban Meta glasses
+- `MockGlasses` — Simulated Ray-Ban Meta glasses
 - `MockCameraKit` — Simulated camera with configurable video feed and photo capture
 
 ## Setup
@@ -512,7 +525,7 @@ mockDeviceKit.enable()
 // Or start in unregistered state to test registration flows:
 // mockDeviceKit.enable(MockDeviceKitConfig(initiallyRegistered = false))
 
-val device = mockDeviceKit.pairRaybanMeta()
+val device = mockDeviceKit.pairGlasses(GlassesModel.RAYBAN_META).getOrThrow()
 ```
 
 You can check `mockDeviceKit.isEnabled` to query whether the mock environment is active.
@@ -714,8 +727,8 @@ Users can allow once or allow always through the Meta AI flow.
 
 | Mode | Registration behavior |
 |------|------------------------|
-| Developer Mode | Use `APPLICATION_ID = 0` for local development |
-| Production | Use the application ID assigned in the Wearables Developer Center |
+| Developer Mode | Use `mwdat_application_id = 0` and `mwdat_client_token = 0` manifest placeholders for local development |
+| Production | Use the application ID and client token assigned in the Wearables Developer Center |
 
 For development builds, enable Developer Mode in the Meta AI app before testing registration and permissions.
 
@@ -742,7 +755,7 @@ Pair this with the [CameraAccess sample](https://github.com/facebook/meta-wearab
 
 1. Create an Android Studio app project.
 2. Add the DAT Maven repository and dependencies.
-3. Configure `AndroidManifest.xml` for registration callbacks and `APPLICATION_ID`.
+3. Configure `AndroidManifest.xml` for registration callbacks plus `APPLICATION_ID` and `CLIENT_TOKEN`.
 4. Initialize `Wearables` in your `Application`.
 
 ## Suggested app structure
@@ -939,7 +952,7 @@ Use `Wearables.devices` and device metadata to decide when it is sensible to cre
 ## Links
 
 - [Session lifecycle documentation](https://wearables.developer.meta.com/docs/lifecycle-events)
-- [Android API reference](https://wearables.developer.meta.com/docs/reference/android/dat/0.7)
+- [Android API reference](https://wearables.developer.meta.com/docs/reference/android/dat/0.8)
 
 # Display Access (Android)
 

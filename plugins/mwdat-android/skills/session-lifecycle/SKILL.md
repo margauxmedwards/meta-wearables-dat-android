@@ -96,4 +96,4 @@ Use `Wearables.devices` and device metadata to decide when it is sensible to cre
 ## Links
 
 - [Session lifecycle documentation](https://wearables.developer.meta.com/docs/lifecycle-events)
-- [Android API reference](https://wearables.developer.meta.com/docs/reference/android/dat/0.7)
+- [Android API reference](https://wearables.developer.meta.com/docs/reference/android/dat/0.8)
